@@ -1,0 +1,16 @@
+export const PEOPLE_SLUG = "/people/";
+export const PLANETS_SLUG = "/planets/";
+export const FILMS_SLUG = "/films/";
+export const CHARACTER = "CHARACTER";
+export const FILM = "FILM";
+export const PLANET = "PLANET";
+export const FETCHED = "FETCHED";
+export const FETCHING = "FETCHING";
+export const FETCH_ERROR = "FETCH_ERROR";
+export const FETCHED_CHARACTER = "FETCHED_CHARACTER";
+export const FETCHED_FILM = "FETCHED_FILM";
+export const FETCHED_PLANET = "FETCHED_PLANET";
+export const STATUS_FETCHED = "FETCHED_OK";
+export const STATUS_FAILED = "FETCHED_FAIL";
+export const HTTP_RX = /^http:\/\//i
+export const HTTPS="https://"
