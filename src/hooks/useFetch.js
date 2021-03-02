@@ -1,56 +1,102 @@
-import { useEffect, useRef, useReducer } from 'react';
+import { useEffect, useRef, useReducer } from "react";
+import * as constants from "../constants/constants";
 
-export const useFetch = (url) => {
-	const cache = useRef({});
+export const useFetch = (url, type) => {
+  const cache = useRef({});
 
-	const initialState = {
-		status: 'idle',
-		error: null,
-		data: [],
-	};
+  const initialState = {
+    status: "idle",
+    error: null,
+    characterdata: [],
+    filmdata: [],
+    planetdata: [],
+  };
 
-	const [state, dispatch] = useReducer((state, action) => {
-		switch (action.type) {
-			case 'FETCHING':
-				return { ...initialState, status: 'fetching' };
-			case 'FETCHED':
-				return { ...initialState, status: 'fetched', data: action.payload };
-			case 'FETCH_ERROR':
-				return { ...initialState, status: 'error', error: action.payload };
-			default:
-				return state;
-		}
-	}, initialState);
+  const [state, dispatch] = useReducer((state, action) => {
+    switch (action.type) {
+      case constants.FETCHING:
+        return { ...initialState, status: constants.FETCHING };
+      case constants.FETCHED_CHARACTER:
+        return {
+          ...initialState,
+          status: constants.STATUS_FETCHED,
+          characterdata: action.payload,
+        };
+      case constants.FETCHED_PLANET:
+        return {
+          ...initialState,
+          status: constants.STATUS_FETCHED,
+          planetdata: action.payload,
+        };
+      case constants.FETCHED_FILM:
+        return {
+          ...initialState,
+          status: constants.STATUS_FETCHED,
+          filmdata: action.payload,
+        };
+      case constants.FETCH_ERROR:
+        return {
+          ...initialState,
+          status: constants.STATUS_FAILED,
+          error: action.payload,
+        };
+      default:
+        return state;
+    }
+  }, initialState);
 
-	useEffect(() => {
-		let cancelRequest = false;
-		if (!url) return;
+  useEffect(() => {
+    let cancelRequest = false;
+    if (!url) return;
 
-		const fetchData = async () => {
-			dispatch({ type: 'FETCHING' });
-			if (cache.current[url]) {
-				const data = cache.current[url];
-				dispatch({ type: 'FETCHED', payload: data });
-			} else {
-				try {
-					const response = await fetch(url);
-					const data = await response.json();
-					cache.current[url] = data;
-					if (cancelRequest) return;
-					dispatch({ type: 'FETCHED', payload: data });
-				} catch (error) {
-					if (cancelRequest) return;
-					dispatch({ type: 'FETCH_ERROR', payload: error.message });
-				}
-			}
-		};
+    const fetchData = async () => {
+      dispatch({ type: constants.FETCHING });
+      if (cache.current[url]) {
+        const data = cache.current[url];
+        switch (type) {
+          case constants.CHARACTER:
+            dispatch({ type: constants.FETCHED_CHARACTER, payload: data });
+            break;
+          case constants.FILM:
+            dispatch({ type: constants.FETCHED_FILM, payload: data });
+            break;
+          case constants.PLANET:
+            dispatch({ type: constants.FETCHED_PLANET, payload: data });
+            break;
+          default:
+            return;
+        }
+      } else {
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          cache.current[url] = data;
+          if (cancelRequest) return;
+          switch (type) {
+						case constants.CHARACTER:
+							dispatch({ type: constants.FETCHED_CHARACTER, payload: data });
+							break;
+						case constants.FILM:
+							dispatch({ type: constants.FETCHED_FILM, payload: data });
+							break;
+						case constants.PLANET:
+							dispatch({ type: constants.FETCHED_PLANET, payload: data });
+							break;
+						default:
+							return;
+					}
+        } catch (error) {
+          if (cancelRequest) return;
+          dispatch({ type: constants.FETCH_ERROR, payload: error.message });
+        }
+      }
+    };
+    fetchData();
 
-		fetchData();
+    return function cleanup() {
+      cancelRequest = true;
+    };
+  }, [url, type]);
 
-		return function cleanup() {
-			cancelRequest = true;
-		};
-	}, [url]);
-
-	return state;
+  return state;
 };
