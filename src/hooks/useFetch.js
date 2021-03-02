@@ -73,18 +73,18 @@ export const useFetch = (url, type) => {
           cache.current[url] = data;
           if (cancelRequest) return;
           switch (type) {
-						case constants.CHARACTER:
-							dispatch({ type: constants.FETCHED_CHARACTER, payload: data });
-							break;
-						case constants.FILM:
-							dispatch({ type: constants.FETCHED_FILM, payload: data });
-							break;
-						case constants.PLANET:
-							dispatch({ type: constants.FETCHED_PLANET, payload: data });
-							break;
-						default:
-							return;
-					}
+            case constants.CHARACTER:
+              dispatch({ type: constants.FETCHED_CHARACTER, payload: data });
+              break;
+            case constants.FILM:
+              dispatch({ type: constants.FETCHED_FILM, payload: data });
+              break;
+            case constants.PLANET:
+              dispatch({ type: constants.FETCHED_PLANET, payload: data });
+              break;
+            default:
+              return;
+          }
         } catch (error) {
           if (cancelRequest) return;
           dispatch({ type: constants.FETCH_ERROR, payload: error.message });
