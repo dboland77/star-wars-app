@@ -8,11 +8,15 @@ const Character = ({ id }) => {
     constants.CHARACTER
   );
 
-  console.log(status, characterdata, error);
-
   return (
     <Fragment>
-      <h1>{characterdata.name}</h1>
+    {status === constants.STATUS_FETCHED && error === null && (
+        <Fragment>
+        <h1>{characterdata.name}</h1>
+        <h1>{characterdata.birth_year}</h1>
+        </Fragment>
+      )
+      }
     </Fragment>
   );
 };

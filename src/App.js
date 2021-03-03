@@ -1,9 +1,7 @@
 // import { Fragment } from "react";
 // import { useFetch } from "./hooks/useFetch";
 // import * as constants from "./constants/constants";
-import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "./components/ErrorFallback";
-import Character from "./components/Character";
+import Card from "./components/Card";
 
 const App = () => {
   // let planeturl, filmurl;
@@ -59,17 +57,13 @@ const App = () => {
           <h1>First film: {film.filmdata.title}</h1>
         )} */
   /* </Fragment> */
+  let cards = [];
+  for (let i=1;i<11;i++){
+    cards.push(<Card charid={i} key={i}/>)
+  }
+
   return (
-    <ErrorBoundary
-    FallbackComponent = {ErrorFallback}
-    onReset={()=> {
-      
-    }}>
-      <Character id={1} />
-      <Character id={2} />
-      <Character id={3} />
-      <Character id={4} />
-    </ErrorBoundary>
+    <div>{cards}</div>
   );
 };
 
