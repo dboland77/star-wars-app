@@ -10,7 +10,7 @@ const Card = ({ charid, planetid, filmid }) => {
   return (
     <Fragment>
       <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
-        <Character id={charid} />
+         <Character id={charid} />
         <Planet id={planetid} />
         <Film id={filmid} />
       </ErrorBoundary>

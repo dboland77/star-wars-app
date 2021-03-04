@@ -1,22 +1,18 @@
 import { Fragment } from "react";
-import { useFetch } from "../hooks/useFetch";
-import * as constants from "../constants/constants";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "./ErrorFallback";
 
-const Character = ({ id }) => {
-  const { status, characterdata, error } = useFetch(
-    `${process.env.REACT_APP_BASE_URL}${constants.PEOPLE_SLUG}${id}/`,
-    constants.CHARACTER
-  );
-
+const Character = ({ characterdata }) => {
   return (
     <Fragment>
-    {status === constants.STATUS_FETCHED && error === null && (
-        <Fragment>
-        <h1>{characterdata.name}</h1>
-        <h1>{characterdata.birth_year}</h1>
-        </Fragment>
-      )
-      }
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
+        <div>
+        Hello
+          {/* <h1>{characterdata.name}</h1>
+          <h1>{characterdata.birth_year}</h1> */}
+        </div>
+        )
+      </ErrorBoundary>
     </Fragment>
   );
 };

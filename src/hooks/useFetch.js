@@ -7,7 +7,7 @@ export const useFetch = (url, type) => {
   const initialState = {
     status: "idle",
     error: null,
-    characterdata: [],
+    chardata: [],
     filmdata: [],
     planetdata: [],
   };
@@ -20,7 +20,7 @@ export const useFetch = (url, type) => {
         return {
           ...initialState,
           status: constants.STATUS_FETCHED,
-          characterdata: action.payload,
+          chardata: action.payload,
         };
       case constants.FETCHED_PLANET:
         return {
