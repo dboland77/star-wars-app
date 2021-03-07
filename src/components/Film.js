@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 
-const Film = ({ id }) => {
+const Film = ({ title }) => {
   return (
     <Fragment>
-      <h1>kk</h1>)
+      <h1>{title}</h1>
     </Fragment>
   );
 };

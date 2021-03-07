@@ -6,11 +6,23 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import { fetchCharacters } from "./reducers/characterReducer";
+import { fetchPlanets } from "./reducers/planetReducer";
+import { fetchFilms } from "./reducers/filmReducer";
 import * as constants from "./constants/constants";
 
 store.dispatch(
   fetchCharacters(`${process.env.REACT_APP_BASE_URL}${constants.PEOPLE_SLUG}`)
 );
+
+store.dispatch(
+  fetchPlanets(`${process.env.REACT_APP_BASE_URL}${constants.PLANETS_SLUG}`)
+);
+
+store.dispatch(
+  fetchFilms(`${process.env.REACT_APP_BASE_URL}${constants.FILMS_SLUG}`)
+);
+
+
 
 ReactDOM.render(
   <React.StrictMode>

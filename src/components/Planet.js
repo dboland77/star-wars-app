@@ -1,13 +1,9 @@
 import { Fragment } from "react";
-import { useFetch } from "../hooks/useFetch";
-import * as constants from "../constants/constants";
 
-const Planet = ({ id }) => {
-
-
+const Planet = ({ name }) => {
   return (
     <Fragment>
-        {/* <h1>{planetdata.name}</h1> */}
+      <h1>{name}</h1>
     </Fragment>
   );
 };

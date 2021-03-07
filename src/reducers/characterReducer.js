@@ -1,45 +1,44 @@
 import * as constants from "../constants/constants";
-// import store from "../store/store";
 import { createSelector } from "reselect";
 
 const initialState = {
-  status: "idle",
-  error: null,
+  character_status: "idle",
+  character_error: null,
   characters: {},
 };
 
 export default function characterReducer(state = initialState, action) {
   switch (action.type) {
-    case constants.FETCHING:
+    case constants.FETCHING_CHARACTER:
       return {
         ...initialState,
-        status: constants.FETCHING,
+        character_status: constants.FETCHING_CHARACTER,
       };
-    case constants.FETCHED:
+    case constants.FETCHED_CHARACTER:
       const newCharacters = {};
       action.payload.forEach((character) => {
         newCharacters[character.name] = character;
       });
       return {
         ...initialState,
-        status: constants.STATUS_FETCHED,
+        character_status: constants.FETCHED_CHARACTER,
         characters: newCharacters,
       };
     case constants.FETCH_ERROR:
       return {
         ...initialState,
-        status: constants.STATUS_FAILED,
-        error: action.payload,
+        character_status: constants.STATUS_FAILED,
+        character_error: action.payload,
       };
     default:
       return state;
   }
 }
 
-export const characterLoading = () => ({ type: constants.FETCHING });
+export const characterLoading = () => ({ type: constants.FETCHING_CHARACTER });
 
 export const characterLoaded = (characters) => ({
-  type: constants.FETCHED,
+  type: constants.FETCHED_CHARACTER,
   payload: characters,
 });
 
