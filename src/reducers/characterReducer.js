@@ -2,8 +2,8 @@ import * as constants from "../constants/constants";
 import { createSelector } from "reselect";
 
 const initialState = {
-  character_status: "idle",
-  character_error: null,
+  status: "idle",
+  error: null,
   characters: {},
 };
 
@@ -12,7 +12,7 @@ export default function characterReducer(state = initialState, action) {
     case constants.FETCHING_CHARACTER:
       return {
         ...initialState,
-        character_status: constants.FETCHING_CHARACTER,
+        status: constants.FETCHING_CHARACTER,
       };
     case constants.FETCHED_CHARACTER:
       const newCharacters = {};
@@ -21,14 +21,14 @@ export default function characterReducer(state = initialState, action) {
       });
       return {
         ...initialState,
-        character_status: constants.FETCHED_CHARACTER,
+        status: constants.FETCHED_CHARACTER,
         characters: newCharacters,
       };
     case constants.FETCH_ERROR:
       return {
         ...initialState,
-        character_status: constants.STATUS_FAILED,
-        character_error: action.payload,
+        status: constants.STATUS_FAILED,
+        error: action.payload,
       };
     default:
       return state;
@@ -43,9 +43,9 @@ export const characterLoaded = (characters) => ({
 });
 
 // Thunk function
-export const fetchCharacters = (url) => async (dispatch) => {
+export const fetchCharacters = (url,opts) => async (dispatch) => {
   dispatch(characterLoading());
-  const response = await fetch(url);
+  const response = await fetch(url,opts);
   const data = await response.json();
   dispatch(characterLoaded(data.results));
 };

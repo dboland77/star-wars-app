@@ -1,62 +1,64 @@
-import { useSelector } from "react-redux";
+import { useEffect, Fragment } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "./ErrorFallback";
-// import Card from "./Card";
-import * as constants from "../constants/constants";
-import Loader from "./loader/Loader";
-import { selectCharacterDetails } from "../reducers/characterReducer";
-import { selectPlanetDetails } from "../reducers/planetReducer";
-import { selectFilmDetails } from "../reducers/filmReducer";
+import {
+  selectCharacterDetails,
+  fetchCharacters,
+} from "../reducers/characterReducer";
+import { fetchPlanet } from "../reducers/planetReducer";
+import { fetchFilm } from "../reducers/filmReducer";
 import Character from "../components/Character";
 import Planet from "../components/Planet";
 import Film from "../components/Film";
+import Card from "../components/Card";
+import * as constants from "../constants/constants";
+import "../styles/Cards.css";
+
+const fixurl = (url) => url.replace(constants.HTTP_RX, constants.HTTPS);
+const peopleurl = `${process.env.REACT_APP_BASE_URL}${constants.PEOPLE_SLUG}`;
+let planeturl;
+let filmurl;
 
 const CardGrid = () => {
-  const characters = useSelector(selectCharacterDetails);
-  let loadingStatus = useSelector((state) => state.character.character_status);
+  const dispatch = useDispatch();
+  const abortCtrl = new AbortController();
 
-  const renderedCharacters = characters.map((char, index) => {
+  const characters = useSelector(selectCharacterDetails);
+
+  const renderedCards = characters.map((char, index) => {
+    planeturl = fixurl(char.homeworld);
+    filmurl = fixurl(char.films[0]);
+
+    dispatch(fetchPlanet(planeturl));
+    dispatch(fetchFilm(filmurl));
+
     return (
-      <Character key={index} name={char.name} birth_year={char.birth_year} />
+      <Card>
+          <ul className="cards">
+            <Character
+              key={index}
+              name={char.name}
+              birth_year={char.birth_year}
+            />
+            <Planet key={index + 100} index={index} />
+            <Film key={index + 200} index={index} />
+          </ul>
+      </Card>
     );
   });
 
-  const planets = useSelector(selectPlanetDetails);
-  loadingStatus = useSelector((state) => state.planet.planet_status);
+  useEffect(() => {
+    const opts = { signal: abortCtrl.signal };
 
-  // if (loadingStatus !== constants.FETCHED_PLANET) {
-  //   return <Loader />;
-  // }
+    dispatch(fetchCharacters(peopleurl, opts));
 
-  const renderedPlanets = planets.map((planet, index) => {
-    return <Planet key={index} name={planet.name} />;
-  });
-
-  const films = useSelector(selectFilmDetails);
-  loadingStatus = useSelector((state) => state.film.film_status);
-
-  if (loadingStatus !== constants.FETCHED_FILM) {
-    return <Loader />;
-  }
-
-  const renderedFilms = films.map((film, index) => {
-    return <Film key={index} title={film.title} />;
-  });
+    return () => {};
+  }, [dispatch]);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
-      {loadingStatus ===
-      (constants.FETCHED_CHARACTER ||
-        constants.FETCHED_PLANET ||
-        constants.FETCHED_FILM) ? (
-        <Loader />
-      ) : (
-        <ul>
-          {renderedCharacters}
-          {renderedPlanets}
-          {renderedFilms}
-        </ul>
-      )}
+      <ul>{renderedCards}</ul>
     </ErrorBoundary>
   );
 };

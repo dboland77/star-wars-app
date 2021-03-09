@@ -3,8 +3,8 @@ import { createSelector } from "reselect";
 
 const initialState = {
   planet_status: "idle",
-  planet_error: null,
-  planets: {},
+  error: null,
+  planets: [],
 };
 
 export default function planetReducer(state = initialState, action) {
@@ -15,14 +15,11 @@ export default function planetReducer(state = initialState, action) {
         status: constants.FETCHING_PLANET,
       };
     case constants.FETCHED_PLANET:
-      const newPlanets = {};
-      action.payload.forEach((planets) => {
-        newPlanets[planets.name] = planets;
-      });
+
       return {
         ...initialState,
         planet_status: constants.FETCHED_PLANET,
-        planets: newPlanets,
+        planets: [...state.planets,action.payload]
       };
     case constants.FETCH_ERROR:
       return {
@@ -42,15 +39,24 @@ export const planetLoaded = (planets) => ({
   payload: planets,
 });
 
-// Thunk function
-export const fetchPlanets = (url) => async (dispatch) => {
+// Thunk function - all planets
+// export const fetchPlanets = (url, opts) => async (dispatch) => {
+//   dispatch(planetLoading());
+//   const response = await fetch(url,opts);
+//   const data = await response.json();
+//   dispatch(planetLoaded(data.results));
+// };
+
+// Thunk function - one planet
+export const fetchPlanet = (url, opts) => async (dispatch) => {
   dispatch(planetLoading());
-  const response = await fetch(url);
+  const response = await fetch(url,opts);
   const data = await response.json();
-  dispatch(planetLoaded(data.results));
+  dispatch(planetLoaded(data));
 };
 
-const selectPlanet = (state) => state.planet.planets;
+
+export const selectPlanet = (state) => state.planet.planets;
 
 export const selectPlanetDetails = createSelector(selectPlanet, (planets) =>
   Object.values(planets)

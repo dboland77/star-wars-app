@@ -4,7 +4,7 @@ import { createSelector } from "reselect";
 const initialState = {
   film_status: "idle",
   film_error: null,
-  films: {},
+  films: [],
 };
 
 export default function filmReducer(state = initialState, action) {
@@ -15,14 +15,10 @@ export default function filmReducer(state = initialState, action) {
         film_status: constants.FETCHING_FILM,
       };
     case constants.FETCHED_FILM:
-      const newfilms = {};
-      action.payload.forEach((film) => {
-        newfilms[film.title] = film;
-      });
       return {
         ...initialState,
         film_status: constants.FETCHED_FILM,
-        films: newfilms,
+        films: [...state.films, action.payload],
       };
     case constants.FETCH_ERROR:
       return {
@@ -43,15 +39,15 @@ export const filmLoaded = (films) => ({
 });
 
 // Thunk function
-export const fetchFilms = (url) => async (dispatch) => {
+export const fetchFilm = (url) => async (dispatch) => {
   dispatch(filmLoading());
   const response = await fetch(url);
   const data = await response.json();
-  dispatch(filmLoaded(data.results));
+  dispatch(filmLoaded(data));
 };
 
-const selectFilms = (state) => state.film.films;
+export const selectFilm = (state) => state.film.films;
 
-export const selectFilmDetails = createSelector(selectFilms, (films) =>
+export const selectFilmDetails = createSelector(selectFilm, (films) =>
   Object.values(films)
 );

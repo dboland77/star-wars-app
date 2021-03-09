@@ -1,21 +1,16 @@
+import React, { Fragment } from "react";
+import "../styles/Cards.css";
 
-import {Fragment} from 'react';
-import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "./ErrorFallback";
-import Character from "./Character";
-import Planet from "./Planet";
-import Film from "./Film";
-
-const Card = ({ charid, planetid, filmid }) => {
+function Card(props) {
   return (
     <Fragment>
-      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
-         <Character id={charid} />
-        <Planet id={planetid} />
-        <Film id={filmid} />
-      </ErrorBoundary>
+      <li className="cards_item">
+        <div className="card">
+          <div className="card_content">{props.children}</div>
+        </div>
+      </li>
     </Fragment>
   );
-};
+}
 
 export default Card;
