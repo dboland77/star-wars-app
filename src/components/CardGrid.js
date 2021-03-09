@@ -15,15 +15,13 @@ import Card from "../components/Card";
 import * as constants from "../constants/constants";
 import "../styles/Cards.css";
 
-const fixurl = (url) => url.replace(constants.HTTP_RX, constants.HTTPS);
-const peopleurl = `${process.env.REACT_APP_BASE_URL}${constants.PEOPLE_SLUG}`;
-let planeturl;
-let filmurl;
-
-const CardGrid = () => {
+const CardGrid = ({ pagenumber }) => {
   const dispatch = useDispatch();
+  const fixurl = (url) => url.replace(constants.HTTP_RX, constants.HTTPS);
+  const peopleurl = `${process.env.REACT_APP_BASE_URL}${constants.PEOPLE_SLUG}${pagenumber}`;
+  let planeturl;
+  let filmurl;
   const abortCtrl = new AbortController();
-
   const characters = useSelector(selectCharacterDetails);
 
   const renderedCards = characters.map((char, index) => {
@@ -44,11 +42,10 @@ const CardGrid = () => {
 
   useEffect(() => {
     const opts = { signal: abortCtrl.signal };
-
     dispatch(fetchCharacters(peopleurl, opts));
 
     return () => {};
-  }, [dispatch]);
+  }, []);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>

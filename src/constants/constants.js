@@ -1,4 +1,4 @@
-export const PEOPLE_SLUG = "/people/";
+export const PEOPLE_SLUG = "/people/?page=";
 export const PLANETS_SLUG = "/planets/";
 export const FILMS_SLUG = "/films/";
 export const CHARACTER = "CHARACTER";
