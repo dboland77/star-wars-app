@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "./ErrorFallback";
@@ -35,15 +35,9 @@ const CardGrid = () => {
 
     return (
       <Card>
-          <ul className="cards">
-            <Character
-              key={index}
-              name={char.name}
-              birth_year={char.birth_year}
-            />
-            <Planet key={index + 100} index={index} />
-            <Film key={index + 200} index={index} />
-          </ul>
+        <Character key={index} name={char.name} birth_year={char.birth_year} />
+        <Planet key={index + 100} index={index} />
+        <Film key={index + 200} index={index} />
       </Card>
     );
   });
@@ -58,7 +52,9 @@ const CardGrid = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
-      <ul>{renderedCards}</ul>
+      <div className="main">
+        <ul className="cards">{renderedCards}</ul>
+      </div>
     </ErrorBoundary>
   );
 };

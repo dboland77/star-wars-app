@@ -18,7 +18,6 @@ body {
 }
 
 .main {
-  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -44,36 +43,7 @@ img {
 
 .cards_item {
   display: flex;
-  padding: 1rem;
-}
-
-@media (min-width: 40rem) {
-  .cards_item {
-    width: 50%;
-  }
-}
-
-@media (min-width: 56rem) {
-  .cards_item {
-    width: 33.3333%;
-  }
-}
-
-.card {
-  background-color: white;
-  border-radius: 0.25rem;
-  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.card_content {
-  padding: 1rem;
-  background: white;
-}
-
-.card_name {
+  padding: 0.5rem;
   color: black;
   font-size: 1.1rem;
   font-weight: 700;
@@ -82,21 +52,32 @@ img {
   margin: 0px;
 }
 
-.card_author {
-  color: green;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  margin-bottom: 0.2rem;
-  font-weight: 400;
+@media (min-width: 20rem) {
+  .cards_item {
+    width: 100%;
+  }
 }
 
-.card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
+@media (min-width: 40rem) {
+  .cards_item {
+    width: 50%;
+  }
+}
+
+@media (min-width: 62rem) {
+  .cards_item {
+    width: 20%;
+  }
+}
+
+.card_content {
+  padding: 1rem;
+  background: white;
 }
 
 .card {
   background-color: #f7f7f7;
+  border-radius: 10%;
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
   margin-top: 50px;
@@ -106,14 +87,7 @@ img {
   -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-}
-
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { selectFilm } from "../reducers/filmReducer";
+import "../styles/Cards.css";
 
 const Film = ({ index }) => {
   const films = useSelector(selectFilm);
@@ -13,7 +14,7 @@ const Film = ({ index }) => {
 
   return (
     <Fragment>
-      <h1>{filmtitle}</h1>
+      <li className="cards_item">{filmtitle}</li>
     </Fragment>
   );
 };
